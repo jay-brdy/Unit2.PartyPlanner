@@ -28,9 +28,9 @@ const getParties = async () => {
 
 //CREATE EVENT
 // name, description, date, location
-const createParty = async (name, description, date, location) => {
+const createParty = async (name, description, unformattedDate, location) => {
     try {
-        const date = new Date(unformattedDate).toISOString();
+        const date = new Date(unformattedDate);
         const response = await fetch(EVENTS_URI, {
             method: "POST",
             headers: { "Content-Type": "application/json"},
@@ -44,7 +44,27 @@ const createParty = async (name, description, date, location) => {
     } catch (error) {
         console.error(error)
     }
-}
+};
+
+document.querySelector("form").addEventListener("submit", (evt) => {
+    const formEl = evt.target;
+    evt.preventDefault();
+    createParty(
+        formEl.title.value,
+        formEl.description.value,
+        formEl.date.value,
+        formEl.location.value
+    );
+
+    // clear inputs
+    formEl.title.value = "";
+    formEl.description.value = "";
+    formEl.date.value = "";
+    formEl.location.value = "";
+
+    // focus the first form element
+    formEl.title.focus();
+});
 
 
 //DELETE EVENT
