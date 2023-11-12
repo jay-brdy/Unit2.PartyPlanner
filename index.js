@@ -16,7 +16,7 @@ const getParties = async () => {
         const parties = json.data;
         console.log("inside GET");
         console.log(parties);
-        if (json.error){
+        if (json.error) {
             throw new Error(json.error);
         }
         state.events = parties;
@@ -33,11 +33,11 @@ const createParty = async (name, description, unformattedDate, location) => {
         const date = new Date(unformattedDate);
         const response = await fetch(EVENTS_URI, {
             method: "POST",
-            headers: { "Content-Type": "application/json"},
-            body: JSON.stringify({name, description, date, location}),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, description, date, location }),
         });
         const json = await response.json();
-        if (json.error){
+        if (json.error) {
             throw new Error(json.error);
         }
         init();
@@ -71,10 +71,10 @@ document.querySelector("form").addEventListener("submit", (evt) => {
 
 const deleteParty = async (id) => {
     try {
-        const response = await fetch(EVENTS_URI+"/"+id, {method: "DELETE"});
+        const response = await fetch(EVENTS_URI + "/" + id, { method: "DELETE" });
         const json = response.json();
         const parties = json.data;
-        if (json.error){
+        if (json.error) {
             throw new Error(json.error);
         }
         state.events = parties;
@@ -87,19 +87,19 @@ const deleteParty = async (id) => {
 function renderEvents() {
     console.log("inside renderEvents");
     console.log(state)
-    if (!state.events || !state.events.length){
+    if (!state.events || !state.events.length) {
         partiesElement = document.createElement('div');
         partiesElement.innerHTML = `<li>No events found!</li>`;
         return;
     }
 
-    const partyItems = state.events.map((party) =>{
+    const partyItems = state.events.map((party) => {
         console.log("inside partyItems");
         console.log(party);
         const partyItem = document.createElement("li");
         partyItem.classList.add("party");
-        partyItem.innerHTML = 
-        `
+        partyItem.innerHTML =
+            `
         <h2>${party.name}</h2>
         <p>${party.description}</p>
         <p>${party.date}</p>
